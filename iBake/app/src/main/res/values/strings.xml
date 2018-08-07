@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">iBake</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="steps">Steps</string>
+    <string name="recipe">Recipe</string>
+    <string name="hyphen">-</string>
+    <string name="recipe_name">Recipe Name</string>
+    <string name="step_image">Step Image</string>
+    <string name="bulle_point">Bullet Point</string>
+    <string name="widget_default_text">Launch and view recipe</string>
+</resources>

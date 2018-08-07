@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#f5d972</color>
+    <color name="colorPrimaryDark">#8e8e38</color>
+    <color name="colorAccent">#FF5252</color>
+
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="ingre_qty_text">#888888</color>
+
+    <color name="recipe_name_background">#444444</color>
+
+    <color name="ingre_card_bg">#FFA95E</color>
+
+</resources>
