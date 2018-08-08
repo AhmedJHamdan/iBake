@@ -29,6 +29,7 @@ public class BakeWidget extends AppWidgetProvider {
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_grid_view);
     }
 
     @Override
@@ -59,6 +60,7 @@ public class BakeWidget extends AppWidgetProvider {
 
     @Override
     public void onDisabled(Context context) {
+        super.onDisabled(context);
         // Enter relevant functionality for when the last widget is disabled
     }
 }
