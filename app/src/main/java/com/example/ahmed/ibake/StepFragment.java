@@ -39,9 +39,12 @@ public class StepFragment extends Fragment {
 
     @State
     long currentPosition = 0;
-
+    private static final String KEY_WINDOW = "window";
+    private static final String PLAYER_POSITION = "position";
     private FragmentStepBinding binding;
-    private SimpleExoPlayer simpleExoPlayer= null;
+    private SimpleExoPlayer simpleExoPlayer = null;
+    private static final String KEY_AUTO_PLAY = "auto_play";
+
 
     @Nullable
     @Override
@@ -52,7 +55,7 @@ public class StepFragment extends Fragment {
         binding = DataBindingUtil.inflate(LayoutInflater.from(container.getContext()),
                 R.layout.fragment_step, container, false);
 
-        if(null != step.getVideoUrl() && !(TextUtils.isEmpty(step.getVideoUrl()))) {
+        if (null != step.getVideoUrl() && !(TextUtils.isEmpty(step.getVideoUrl()))) {
             initializePlayer();
         } else {
             binding.expPlayer.setVisibility(View.GONE);
@@ -61,12 +64,13 @@ public class StepFragment extends Fragment {
         return binding.getRoot();
     }
 
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 
         super.onActivityCreated(savedInstanceState);
 
-        if(null != binding.tvShortDescriptionStep) {
+        if (null != binding.tvShortDescriptionStep) {
             binding.tvShortDescriptionStep.setText(step.getShortDescription());
             binding.tvFullDescription.setText(step.getDescription());
         } else {
@@ -78,6 +82,7 @@ public class StepFragment extends Fragment {
             );
         }
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -98,7 +103,8 @@ public class StepFragment extends Fragment {
     public void onPause() {
         super.onPause();
         if (Util.SDK_INT <= 23) {
-            simpleExoPlayer.release();
+            currentPosition = simpleExoPlayer.getCurrentPosition();
+simpleExoPlayer.release();
         }
     }
 
@@ -109,9 +115,10 @@ public class StepFragment extends Fragment {
             simpleExoPlayer.release();
         }
     }
+
     public void onDetach() {
         super.onDetach();
-        if (simpleExoPlayer != null){
+        if (simpleExoPlayer != null) {
             simpleExoPlayer.stop();
             simpleExoPlayer.release();
 
@@ -122,7 +129,7 @@ public class StepFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (simpleExoPlayer != null){
+        if (simpleExoPlayer != null) {
             simpleExoPlayer.stop();
             simpleExoPlayer.release();
             simpleExoPlayer = null;
@@ -130,16 +137,14 @@ public class StepFragment extends Fragment {
     }
 
 
-
-
-
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-        if(null != simpleExoPlayer) {
+        if (null != simpleExoPlayer) {
             simpleExoPlayer.setPlayWhenReady(true);
             currentPosition = simpleExoPlayer.getCurrentPosition();
+            outState.putLong(PLAYER_POSITION, currentPosition);
+            outState.putBoolean("state", simpleExoPlayer.getPlayWhenReady());
         }
 
         Icepick.saveInstanceState(this, outState);
@@ -153,18 +158,18 @@ public class StepFragment extends Fragment {
 
     public void updateStep(Steps step) {
 
-        if(null != binding.tvShortDescriptionStep) {
+        if (null != binding.tvShortDescriptionStep) {
             binding.tvShortDescriptionStep.setText(step.getShortDescription());
             binding.tvFullDescription.setText(step.getDescription());
         }
 
-        if(null == simpleExoPlayer) {
+        if (null == simpleExoPlayer) {
             initializePlayer();
         }
         simpleExoPlayer.setPlayWhenReady(false);
 
 
-        if(null != step.getVideoUrl() && !(TextUtils.isEmpty(step.getVideoUrl()))) {
+        if (null != step.getVideoUrl() && !(TextUtils.isEmpty(step.getVideoUrl()))) {
 
             binding.expPlayer.setVisibility(View.VISIBLE);
             Uri uri = Uri.parse(step.getVideoUrl());
@@ -198,4 +203,7 @@ public class StepFragment extends Fragment {
         MediaSource mediaSource = buildMediaSource(uri);
         simpleExoPlayer.prepare(mediaSource, true, false);
     }
-}
+
+
+    }
+
