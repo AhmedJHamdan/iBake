@@ -3,14 +3,14 @@
     package="com.example.ahmed.ibake">
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:name=".RecipeApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        >
 
         <activity android:name=".RecipeListActivity">
             <intent-filter>
@@ -22,9 +22,12 @@
 
         <activity
             android:name=".RecipeDetailsActivity"
-            android:theme="@style/NoActionBarAppTheme" />
+            android:theme="@style/NoActionBarAppTheme"
 
-        <activity android:name=".StepActivity" />
+            />
+
+        <activity android:name=".StepActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"/>
 
         <receiver android:name=".BakeWidget">
             <intent-filter>
@@ -40,7 +43,6 @@
         <service android:name=".Widget.WidgetRemoteService"
             android:permission="android.permission.BIND_REMOTEVIEWS"
             />
-
     </application>
 
 </manifest>

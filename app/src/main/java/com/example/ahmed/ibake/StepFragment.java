@@ -45,6 +45,11 @@ public class StepFragment extends Fragment {
     private SimpleExoPlayer simpleExoPlayer = null;
     private static final String KEY_AUTO_PLAY = "auto_play";
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Nullable
     @Override
@@ -83,11 +88,15 @@ public class StepFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (Util.SDK_INT <= 23 || simpleExoPlayer == null) {
+        if (simpleExoPlayer == null) {
             initializePlayer();
         }
     }
@@ -95,15 +104,11 @@ public class StepFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (Util.SDK_INT <= 23) {
+        if (simpleExoPlayer != null) {
             currentPosition = simpleExoPlayer.getCurrentPosition();
-simpleExoPlayer.release();
+            simpleExoPlayer.release();
         }
     }
-
-
-
-
 
     @Override
     public void onDestroy() {
@@ -153,7 +158,7 @@ simpleExoPlayer.release();
             binding.expPlayer.setVisibility(View.VISIBLE);
             Uri uri = Uri.parse(step.getVideoUrl());
             MediaSource mediaSource = buildMediaSource(uri);
-            simpleExoPlayer.prepare(mediaSource, false, false);
+            simpleExoPlayer.prepare(mediaSource, true, false);
             simpleExoPlayer.setPlayWhenReady(true);
 
         } else {
@@ -175,14 +180,11 @@ simpleExoPlayer.release();
                 new DefaultLoadControl());
 
         binding.expPlayer.setPlayer(simpleExoPlayer);
-        simpleExoPlayer.setPlayWhenReady(true);
         simpleExoPlayer.seekTo(currentPosition);
+        simpleExoPlayer.setPlayWhenReady(true);
 
         Uri uri = Uri.parse(step.getVideoUrl());
         MediaSource mediaSource = buildMediaSource(uri);
         simpleExoPlayer.prepare(mediaSource, false, false);
     }
-
-
-    }
-
+}
