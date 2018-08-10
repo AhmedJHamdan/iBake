@@ -83,13 +83,6 @@ public class StepFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (Util.SDK_INT > 23) {
-            initializePlayer();
-        }
-    }
 
     @Override
     public void onResume() {
@@ -108,23 +101,9 @@ simpleExoPlayer.release();
         }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (Util.SDK_INT > 23) {
-            simpleExoPlayer.release();
-        }
-    }
-
-    public void onDetach() {
-        super.onDetach();
-        if (simpleExoPlayer != null) {
-            simpleExoPlayer.stop();
-            simpleExoPlayer.release();
 
 
-        }
-    }
+
 
     @Override
     public void onDestroy() {
@@ -174,7 +153,7 @@ simpleExoPlayer.release();
             binding.expPlayer.setVisibility(View.VISIBLE);
             Uri uri = Uri.parse(step.getVideoUrl());
             MediaSource mediaSource = buildMediaSource(uri);
-            simpleExoPlayer.prepare(mediaSource, true, false);
+            simpleExoPlayer.prepare(mediaSource, false, false);
             simpleExoPlayer.setPlayWhenReady(true);
 
         } else {
@@ -201,7 +180,7 @@ simpleExoPlayer.release();
 
         Uri uri = Uri.parse(step.getVideoUrl());
         MediaSource mediaSource = buildMediaSource(uri);
-        simpleExoPlayer.prepare(mediaSource, true, false);
+        simpleExoPlayer.prepare(mediaSource, false, false);
     }
 
 
