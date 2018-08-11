@@ -1,6 +1,7 @@
 package com.example.ahmed.ibake;
 
 
+import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,10 +9,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
+
 import com.example.ahmed.ibake.Recipes.Steps;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -69,6 +73,36 @@ public class StepFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+
+        super.onConfigurationChanged(newConfig);
+        int currentOrientation = getResources().getConfiguration().orientation;
+        // Si es landscape, cambia los valores visuales
+        if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE){
+            // Ocultar la barra de estado
+            getActivity().getWindow()
+                    .getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+
+            // Ocultar la barra de accion
+            if(((AppCompatActivity)getActivity()).getSupportActionBar() != null)
+                ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+
+            binding.expPlayer.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        }
+        else {
+            // Mostrar la barra de estado
+            getActivity().getWindow()
+                    .getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+
+            // Mostrar la barra de accion
+            if(((AppCompatActivity)getActivity()).getSupportActionBar() != null)
+                ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+
+            binding.expPlayer.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getResources().getDisplayMetrics())));
+
+        }
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
